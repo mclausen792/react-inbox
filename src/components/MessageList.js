@@ -3,7 +3,12 @@ import Message from './Message'
 
 
 
-const MessageList = ({data})=>{
+const MessageList = ({
+  data,
+  isRead,
+  isSelected,
+  isStarred,
+  })=>{
     return(
       <div>
         <form className="form-horizontal well">
@@ -31,7 +36,7 @@ const MessageList = ({data})=>{
   </div>
 </form>
 
-        {data.map(data => <Message key= {data.id} data = {data}/>)}
+        {data.map(data => <Message key= {data.id} data = {data} isRead = {isRead} isSelected = {isSelected} isStarred = {isStarred}/>)}
 
       </div>
     )
