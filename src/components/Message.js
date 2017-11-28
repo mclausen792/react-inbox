@@ -5,14 +5,14 @@ class Message extends React.Component {
 render(){
 
   let isRead = 'row message'
-  isRead += this.props.message.read === true
+    isRead += this.props.message.read === true
       ? ' read' : ' unread'
 
   if (this.props.message.selected) { isRead += ' selected'}
 
   let isStarred = 'star fa '
-  isStarred += this.props.message.starred === true
-    ? 'fa-star' : 'fa-star-o'
+    isStarred += this.props.message.starred === true
+      ? 'fa-star' : 'fa-star-o'
 
 
     return(

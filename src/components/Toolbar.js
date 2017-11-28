@@ -3,6 +3,18 @@ import React from 'react';
 
 
 class Toolbar extends React.Component{
+
+  getSelectClass () {
+  switch(this.props.select){
+    case 'all':
+      return 'fa-check-square-o'
+    case 'some':
+      return  'fa-minus-square-o'
+    case 'none':
+    default:
+      return 'fa-square-o'
+  }
+}
   render(){
     return(
       <div className="row toolbar">
@@ -16,8 +28,8 @@ class Toolbar extends React.Component{
           <i className="fa fa-plus"></i>
         </a>
 
-        <button className="btn btn-default">
-          <i className="fa fa-minus-square-o"></i>
+        <button className="btn btn-default" onClick={this.props.checkAll.bind(this)}>
+          <i className={`glyphicon ${this.props.someChecked()}`}></i>
         </button>
 
         <button className="btn btn-default">Mark As Read</button>
