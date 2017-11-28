@@ -82,6 +82,15 @@ markAsUnread(){
   this.setState({messageData:messageData})
 }
 
+delete(){
+    let newData = this.state.messageData;
+    for(var i = 0; i < newData.length; i++){
+      if(newData[i].selected){
+        newData.splice(i,1)
+      }
+    }
+    this.setState({messageData: newData})
+  }
   render(){
     console.log('App', messageData);
   return (
@@ -93,6 +102,7 @@ markAsUnread(){
       someChecked={this.someChecked.bind(this)}
       markAsRead={this.markAsRead.bind(this)}
       markAsUnread={this.markAsUnread.bind(this)}
+      delete = {this.delete.bind(this)}
            />
     <Compose />
       <MessageList
