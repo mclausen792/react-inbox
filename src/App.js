@@ -91,6 +91,23 @@ delete(){
     }
     this.setState({messageData: newData})
   }
+
+  applyLabel(e){
+    let newData = this.state.messageData;
+    for(var i = 0; i< newData.length; i++){
+      if(newData[i].selected){
+      if(e.target.value !== 'Apply label'){
+      var arr = this.state.messageData[i].labels
+      var label = e.target.value
+      console.log('here', label);
+      if(arr.indexOf(label) === -1){
+        arr.push(label)
+      }
+      }
+      }
+    }
+    this.setState({messageData:messageData})
+  }
   render(){
     console.log('App', messageData);
   return (
@@ -103,6 +120,7 @@ delete(){
       markAsRead={this.markAsRead.bind(this)}
       markAsUnread={this.markAsUnread.bind(this)}
       delete = {this.delete.bind(this)}
+      applyLabel = {this.applyLabel.bind(this)}
            />
     <Compose />
       <MessageList
