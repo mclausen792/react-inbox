@@ -70,6 +70,17 @@ markAsRead(){
   let messageData = this.state.messageData
   this.setState({messageData:messageData})
 }
+markAsUnread(){
+  for(var i = 0; i<this.state.messageData.length; i++){
+    if(this.state.messageData[i].selected === true){
+      if(this.state.messageData[i].read === true){
+        this.state.messageData[i].read = false
+      }
+    }
+  }
+  let messageData = this.state.messageData
+  this.setState({messageData:messageData})
+}
 
   render(){
     console.log('App', messageData);
@@ -81,6 +92,7 @@ markAsRead(){
       checkAll={this.checkAll.bind(this)}
       someChecked={this.someChecked.bind(this)}
       markAsRead={this.markAsRead.bind(this)}
+      markAsUnread={this.markAsUnread.bind(this)}
            />
     <Compose />
       <MessageList
