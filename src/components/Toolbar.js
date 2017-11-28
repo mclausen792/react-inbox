@@ -32,7 +32,7 @@ class Toolbar extends React.Component{
           <i className={`glyphicon ${this.props.someChecked()}`}></i>
         </button>
 
-        <button className="btn btn-default">Mark As Read</button>
+       <button className="btn btn-default" onClick={this.props.markAsRead.bind(this)}>Mark As Read</button>
 
         <button className="btn btn-default">Mark As Unread</button>
 

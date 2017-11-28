@@ -8,8 +8,8 @@ import Compose from './components/Compose'
 class App extends React.Component{
   constructor(props){
     super(props)
-    this.state = {
-    messageData:messageData
+     this.state = {
+     messageData:messageData
     }
   }
 
@@ -24,7 +24,8 @@ class App extends React.Component{
   newData[i].selected = !newData[i].selected
   this.setState({messageData: newData})
 }
-checkAll(){
+
+  checkAll(){
     let newData = this.state.messageData;
     let check = 0;
     for(var i = 0; i < newData.length; i++){
@@ -41,7 +42,8 @@ checkAll(){
     }
     this.setState({messageData: newData})
   }
-someChecked(){
+
+  someChecked(){
    let count = 0
    for(var i = 0; i < this.state.messageData.length; i++){
      if(this.state.messageData[i].selected){
@@ -56,6 +58,19 @@ someChecked(){
      return 'fa fa-square-o'
    }
  }
+
+markAsRead(){
+  for(var i = 0; i<this.state.messageData.length; i++){
+    if(this.state.messageData[i].selected === true){
+      if(this.state.messageData[i].read === false){
+        this.state.messageData[i].read = true
+      }
+    }
+  }
+  let messageData = this.state.messageData
+  this.setState({messageData:messageData})
+}
+
   render(){
     console.log('App', messageData);
   return (
@@ -65,12 +80,14 @@ someChecked(){
       onSelect = {this.handleSelect}
       checkAll={this.checkAll.bind(this)}
       someChecked={this.someChecked.bind(this)}
+      markAsRead={this.markAsRead.bind(this)}
            />
     <Compose />
       <MessageList
         messageData={this.state.messageData}
         toggleStar={this.handleStar}
         toggleSelect = {this.handleSelect}
+
       />
 </div>
    );
