@@ -2,27 +2,39 @@ import React from 'react'
 
 
 
-const Message = ({data}) => {
 
-  function isRead(read){return read ? 'read': 'unread'}
-  function isSelected(selected){return selected ? 'selected': ''}
-  function isStarred(starred){return starred ? 'fa-star' : 'fa-star-o' }
+const Message = ({
+  messageData,
+  toggleStar,
+  toggleSelected
+  }) => {
+
+   function isRead(read){
+     return read ? 'read' : 'unread'
+   }
+
+   function isStarred(starred){ return starred ? '' : '-o' }
+
+   function isSelected(selected){
+     return selected ? 'selected' : ''
+   }
+
     return(
-      <div className={`row message ${isRead(data.read)} ${isSelected(data.selected)}`}>
+      <div className={`row message ${isRead(messageData.read)} ${isSelected(messageData.selected)}`}>
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked ={`${isSelected(data.selected)}`} />
+              <input type="checkbox" checked={ !!messageData.selected} onChange={()=> toggleSelected(messageData)}/>
             </div>
             <div className="col-xs-2">
-              <i className={`star fa ${isStarred(data.starred)}`}></i>
+               <i className={`star fa fa-star${isStarred(messageData.starred)}`} onClick={ () => toggleStar(messageData) }></i>
             </div>
           </div>
         </div>
         <div className="col-xs-11">
-          {data.labels.map(label => <span className="label label-warning">{label}</span>)}
+          {messageData.labels.map(label => <span className="label label-warning">{label}</span> )}
           <a href="#">
-          {data.subject}
+          {messageData.subject}
           </a>
         </div>
       </div>
