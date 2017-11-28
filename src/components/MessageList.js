@@ -1,20 +1,21 @@
 import React from 'react';
 import Message from './Message'
+import Toolbar from './Toolbar'
 
-
-const MessageList = ({
-  messageData,
-  isRead,
-  isStarred,
-  toggleStar,
-  toggleSelected,
-  toggleSelectAll
-  })=>{
+const MessageList = (props) => {
+  console.log(props.messageData)
     return(
-  <div>
-
-  {messageData.map(messageData => <Message key= {messageData.id} messageData = {messageData} isRead = {isRead} toggleSelected={ toggleSelected }  toggleSelectAll={ toggleSelectAll}  toggleStar = {toggleStar}/>)}
-  </div>
-    )
+    <div>
+      {props.messageData.map((message) => {
+        return <Message
+          key={message.id}
+          message={message}
+          onStar={() => props.toggleStar(message.id-1)}
+          onSelect = {() => props.toggleSelect(message.id-1)}
+        />
+      })}
+   </div>
+   )
   }
+
 export default MessageList
