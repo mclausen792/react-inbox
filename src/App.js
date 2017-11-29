@@ -11,11 +11,39 @@ class App extends React.Component{
      this.state = {
      messageData:messageData
     }
+
+  }
+  async componentDidMount() {
+   const response = await fetch('https://a-react-inbox.herokuapp.com/api/messages')
+   const json = await response.json()
+   this.setState({messageData: json._embedded.messages})
   }
 
+  async patchItem(item){
+    const response = await fetch('https://a-react-inbox.herokuapp.com/api/messages',{
+      method: 'PATCH',
+      body: JSON.stringify(item),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+
+    })
+    this.setState({messageData:messageData})
+  }
+
+
   handleStar = (i) => {
+    let selectStar = {
+      "messageIds":[],
+      "command":"star",
+      "star":true
+    }
     let newData = this.state.messageData
     newData[i].starred = !newData[i].starred
+    selectStar.messageIds.push(newData[i].id)
+    selectStar.star = newData[i].starred
+    this.patchItem(selectStar)
     this.setState({messageData: newData})
   }
 

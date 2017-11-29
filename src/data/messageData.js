@@ -55,7 +55,7 @@ const messageData = [
     "subject": "If we connect the sensor, we can get to the HDD port through the redundant IB firewall!",
     "read": true,
     "starred": true,
-    "labels": []
+    "labels": ["dev"]
   }
 ]
 export default messageData

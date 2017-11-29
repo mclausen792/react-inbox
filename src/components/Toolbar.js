@@ -29,7 +29,7 @@ class Toolbar extends React.Component{
         </a>
 
         <button className="btn btn-default" onClick={this.props.checkAll.bind(this)}>
-          <i className={`glyphicon ${this.props.someChecked()}`}></i>
+          <i className={`fa ${this.props.someChecked()}`}></i>
         </button>
 
        <button className="btn btn-default" onClick={this.props.markAsRead.bind(this)}>Mark As Read</button>
