@@ -9,9 +9,8 @@ class App extends React.Component{
   constructor(props){
     super(props)
      this.state = {
-     messageData:messageData
+     messageData:[]
     }
-
   }
   async componentDidMount() {
    const response = await fetch('https://a-react-inbox.herokuapp.com/api/messages')
@@ -19,18 +18,17 @@ class App extends React.Component{
    this.setState({messageData: json._embedded.messages})
   }
 
-  async patchItem(item){
+  async patchItem(message, newData){
     const response = await fetch('https://a-react-inbox.herokuapp.com/api/messages',{
       method: 'PATCH',
-      body: JSON.stringify(item),
+      body: JSON.stringify(message),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       }
-
-    })
-    this.setState({messageData:messageData})
-  }
+   })
+  this.setState({messageData: newData})
+}
 
 
   handleStar = (i) => {
@@ -53,7 +51,109 @@ class App extends React.Component{
   this.setState({messageData: newData})
 }
 
-  checkAll(){
+markAsRead = () => {
+  let newData = this.state.messageData;
+  let messageIds = []
+
+  let beenRead = {
+    "messageIds":messageIds,
+    "command":"read",
+    "read":true
+  }
+for(var i = 0; i<newData.length; i++){
+    if(newData[i].selected === true){
+      if(newData[i].read === false){
+        newData[i].read = true
+        beenRead.messageIds.push(newData[i].id)
+        beenRead.star = newData[i].read
+      }
+    }
+  }
+  this.patchItem(beenRead, newData)
+    this.setState({messageData: newData})
+  }
+
+  markAsUnread = () => {
+    let newData = this.state.messageData;
+    let messageIds = []
+
+    let notRead = {
+      "messageIds":messageIds,
+      "command":"read",
+      "read":false
+    }
+
+    for(var i = 0; i<newData.length; i++){
+      if(newData[i].selected === true){
+        if(newData[i].read === true){
+          newData[i].read = false
+          messageIds.push(newData[i].id)
+        }
+      }
+    }
+    this.patchItem(notRead, newData)
+    this.setState({messageData: newData})
+  }
+
+  applyLabel = (e) => {
+    let newData = this.state.messageData;
+    let messageIds = []
+    let label = ""
+
+    var newLabel = {
+            "messageIds": messageIds,
+            "command": "addLabel",
+            "label" : ""
+    }
+
+    for(var i = 0; i< newData.length; i++){
+      if(newData[i].selected === true){
+        if(e.target.value !== 'Apply label'){
+          label = e.target.value
+          let labels = newData[i].labels
+          if(labels.indexOf(label) === -1){
+            labels.push(label)
+          }
+          messageIds.push(newData[i].id)
+            newLabel.label = label
+        }
+      }
+    }
+    this.patchItem(newLabel, newData)
+    this.setState({messageData: newData})
+  }
+
+  removeLabel = (e) => {
+    let newData = this.state.messageData
+    let messageIds = []
+    let label = ""
+
+    const unlabel = {
+      "messageIds": messageIds,
+      "command": "removeLabel",
+      "label": ""
+    }
+
+    for(var i=0; i < newData.length; i++){
+      if(newData[i].selected === true){
+        if(e.target.value !== 'Remove Label'){
+          label = e.target.value
+          let labels = newData[i].labels
+          if(labels.includes(label)){
+            let i = labels.indexOf(label)
+            labels.splice(i, 1)
+          }
+          messageIds.push(newData[i].id)
+          unlabel.label = label
+        }
+      }
+    }
+    this.patchItem(unlabel, newData)
+    this.setState({messageData: newData})
+  }
+
+
+  checkAll = () => {
     let newData = this.state.messageData;
     let check = 0;
     for(var i = 0; i < newData.length; i++){
@@ -71,73 +171,42 @@ class App extends React.Component{
     this.setState({messageData: newData})
   }
 
-  someChecked(){
+  someChecked =() => {
+    let newData = this.state.messageData
    let count = 0
-   for(var i = 0; i < this.state.messageData.length; i++){
-     if(this.state.messageData[i].selected){
+   for(var i = 0; i < newData.length; i++){
+     if(newData[i].selected){
        count++
      }
    }
-   if(count > 0 && count < this.state.messageData.length){
+   if(count > 0 && count < newData.length){
      return 'fa fa-minus-square-o'
-   }else if(count === this.state.messageData.length){
+   }else if(count === newData.length){
      return 'fa fa-check-square-o'
    }else{
      return 'fa fa-square-o'
    }
  }
 
-markAsRead(){
-  for(var i = 0; i<this.state.messageData.length; i++){
-    if(this.state.messageData[i].selected === true){
-      if(this.state.messageData[i].read === false){
-        this.state.messageData[i].read = true
-      }
-    }
-  }
-  let messageData = this.state.messageData
-  this.setState({messageData:messageData})
-}
-markAsUnread(){
-  for(var i = 0; i<this.state.messageData.length; i++){
-    if(this.state.messageData[i].selected === true){
-      if(this.state.messageData[i].read === true){
-        this.state.messageData[i].read = false
-      }
-    }
-  }
-  let messageData = this.state.messageData
-  this.setState({messageData:messageData})
-}
 
-delete(){
+
+
+delete = () => {
+  let byeBye = {
+  "messageIds": [],
+  "command": "delete"
+}
     let newData = this.state.messageData;
     for(var i = 0; i < newData.length; i++){
       if(newData[i].selected){
-        newData.splice(i,1)
+        byeBye.messageIds.push(newData[i].id)
       }
     }
+      this.patchItem(byeBye)
     this.setState({messageData: newData})
   }
 
-  applyLabel(e){
-    let newData = this.state.messageData;
-    for(var i = 0; i< newData.length; i++){
-      if(newData[i].selected){
-      if(e.target.value !== 'Apply label'){
-      var arr = this.state.messageData[i].labels
-      var label = e.target.value
-      console.log('here', label);
-      if(arr.indexOf(label) === -1){
-        arr.push(label)
-      }
-      }
-      }
-    }
-    this.setState({messageData:messageData})
-  }
   render(){
-    console.log('App', messageData);
   return (
   <div>
     <Toolbar
@@ -149,12 +218,13 @@ delete(){
       markAsUnread={this.markAsUnread.bind(this)}
       delete = {this.delete.bind(this)}
       applyLabel = {this.applyLabel.bind(this)}
+      removeLabel = {this.removeLabel.bind(this)}
            />
     <Compose />
       <MessageList
         messageData={this.state.messageData}
-        toggleStar={this.handleStar}
-        toggleSelect = {this.handleSelect}
+        toggleStar={i => this.handleStar(i)}
+        toggleSelect = {a => this.handleSelect(a)}
 
       />
 </div>

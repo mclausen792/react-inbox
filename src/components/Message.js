@@ -2,34 +2,32 @@ import React from 'react'
 
 
 class Message extends React.Component {
+  isRead() {
+    return this.props.message.read ? 'read' : 'unread'
+  }
+  selected(){
+    return this.props.message.selected ? 'selected' : ''
+  }
+  isStarred() {
+    return this.props.message.starred ? 'fa-star' : 'fa-star-o'
+  }
+
 render(){
-
-  let isRead = 'row message'
-    isRead += this.props.message.read === true
-      ? ' read' : ' unread'
-
-  if (this.props.message.selected) { isRead += ' selected'}
-
-  let isStarred = 'star fa '
-    isStarred += this.props.message.starred === true
-      ? 'fa-star' : 'fa-star-o'
-
-
     return(
-      <div>
-      <div className={isRead}>
+    <div>
+      <div className={`row message ${this.isRead()} ${this.selected()}`}>
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" onChange={this.props.onSelect} checked={this.props.message.selected}/>
+              <input type="checkbox" name="checkName" onClick={this.props.onSelect} defaultChecked={this.props.message.selected}/>
             </div>
             <div className="col-xs-2">
-               <i className={isStarred} onClick={this.props.onStar}></i>
+               <i className={`fa star ${this.isStarred()}`} onClick={this.props.onStar}></i>
             </div>
           </div>
         </div>
         <div className="col-xs-11">
-          {this.props.message.labels.map(label => <span className="label label-warning">{label}</span>)}
+          {this.props.message.labels.map((label) => <span className="label label-warning" key={label.toString()}>{label}</span>)}
           <a href="#">
           {this.props.message.subject}
           </a>
