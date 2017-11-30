@@ -4,32 +4,22 @@ import React from 'react';
 
 class Toolbar extends React.Component{
 
-  getSelectClass () {
-  switch(this.props.select){
-    case 'all':
-      return 'fa-check-square-o'
-    case 'some':
-      return  'fa-minus-square-o'
-    case 'none':
-    default:
-      return 'fa-square-o'
-  }
-}
   render(){
+
     return(
       <div className="row toolbar">
       <div className="col-md-12">
         <p className="pull-right">
-          <span className="badge badge">2</span>
+          <span className="badge badge"> {this.props.unreadCount}</span>
           unread messages
         </p>
 
-        <a className="btn btn-danger">
-          <i className="fa fa-plus"></i>
-        </a>
+        <a className="btn btn-danger" onClick={this.props.toggleCompose.bind(this)}>
+            <i className="fa fa-plus" ></i>
+          </a>
 
         <button className="btn btn-default" onClick={this.props.checkAll.bind(this)}>
-          <i className={`fa ${this.props.someChecked()}`}></i>
+          <i className={this.props.someChecked()}></i>
         </button>
 
        <button className="btn btn-default" onClick={this.props.markAsRead.bind(this)}>Mark As Read</button>

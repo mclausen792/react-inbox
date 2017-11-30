@@ -13,13 +13,14 @@ class Message extends React.Component {
   }
 
 render(){
+
     return(
     <div>
       <div className={`row message ${this.isRead()} ${this.selected()}`}>
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" name="checkName" onClick={this.props.onSelect} defaultChecked={this.props.message.selected}/>
+              <input type="checkbox" name="checkName" onClick={this.props.onSelect} checked={this.props.message.selected}/>
             </div>
             <div className="col-xs-2">
                <i className={`fa star ${this.isStarred()}`} onClick={this.props.onStar}></i>
@@ -27,7 +28,7 @@ render(){
           </div>
         </div>
         <div className="col-xs-11">
-          {this.props.message.labels.map((label) => <span className="label label-warning" key={label.toString()}>{label}</span>)}
+          {this.props.labels.map((label) => <span className="label label-warning" key={label.toString()}>{label}</span>)}
           <a href="#">
           {this.props.message.subject}
           </a>

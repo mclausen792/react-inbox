@@ -1,9 +1,15 @@
 import React from 'react'
 
 
-const Compose = () => {
+class Compose extends React.Component {
+  constructor(props){
+    super(props)
+
+  }
+
+  render() {
   return (
-    <form className="form-horizontal well">
+   <form className="form-horizontal well" onSubmit={this.props.submitMessage}>
   <div className="form-group">
     <div className="col-sm-8 col-sm-offset-2">
       <h4>Compose Message</h4>
@@ -26,8 +32,8 @@ const Compose = () => {
       <input type="submit" value="Send" className="btn btn-primary"/>
     </div>
   </div>
-</form>
-)
+</form>)
+  }
 }
 
 export default Compose
